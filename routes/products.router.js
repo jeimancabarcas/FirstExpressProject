@@ -1,4 +1,3 @@
-const { response } = require('express');
 const express = require('express');
 
 const router = express.Router();
@@ -12,12 +11,12 @@ const productService = new ProductService();
  */
 
 // Return products filtered by maxPrice
-router.get('/filter', async (req, res) => {
+router.get('/filter', async (req, res, next) => {
   try {
     const { maxPrice } = req.query;
     res.json(await productService.findFilteredByMaxPrice(maxPrice));
   } catch (error) {
-    res.status(500).json({message: error.message})
+    next(error);
   }
 });
 // Return product filtered by id

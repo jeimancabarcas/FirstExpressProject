@@ -1,4 +1,5 @@
 const faker = require('faker');
+const boom = require('@hapi/boom')
 
 class ProductService {
   // Private field to product list
@@ -37,7 +38,7 @@ class ProductService {
       const result = this.#PRODUCTS_LIST.filter((item) => item.price  <= maxPrice);
       return result ? result : []
     }else {
-      throw new Error('Parameter maxPrice is not valid.');
+      throw boom.notFound('Product not found');
     }
   }
 }
