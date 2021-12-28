@@ -1,12 +1,15 @@
 const faker = require('faker');
 const boom = require('@hapi/boom')
 
+const pool = require('./../lib/postgres')
+
 class ProductService {
   // Private field to product list
   #PRODUCTS_LIST = [];
-
   constructor() {
     this.#generateData();
+    this.pool = pool;
+    this.pool.on('error', (err) => console.error(err))
   }
 
   //Private method to generate data
@@ -25,7 +28,8 @@ class ProductService {
   }
 
   async findAll() {
-    return this.#PRODUCTS_LIST;
+    const response = await this.pool.query(`SELECT * FROM products`);
+    return response.rows;
   }
 
   async findById(id) {
